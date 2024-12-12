@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers.
+#define WIN32_LEAN_AND_MEAN // Exclude rarely-used stuff from Windows headers.
 #endif
 
 #include <windows.h>
@@ -15,3 +15,5 @@
 #include <string>
 #include <wrl.h> // TODO: replace with winrt? https://learn.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/get-started
 #include <shellapi.h>
+
+#include <stdexcept>

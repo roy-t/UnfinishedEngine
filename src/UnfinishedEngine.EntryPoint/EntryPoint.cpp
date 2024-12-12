@@ -8,7 +8,7 @@
 _Use_decl_annotations_
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow)
 {
-	DirectX12Application application(1920, 1200);
+	DirectX12Application application(1920, 1200, L"HELLO");
 	return Win32Application::Run(&application, hInstance, nCmdShow);
 }
 
