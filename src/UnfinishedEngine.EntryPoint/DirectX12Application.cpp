@@ -27,10 +27,26 @@ void DirectX12Application::OnUpdate()
 
 void DirectX12Application::OnRender()
 {
+	// Record all the commands we need to render the scene into the command list.
+	PopulateCommandList();
+
+	// Execute the command list.
+	ID3D12CommandList* ppCommandLists[] = { m_commandList.Get() };
+	m_commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+	// Present the frame.
+	ThrowIfFailed(m_swapChain->Present(1, 0));
+
+	WaitForPreviousFrame();
 }
 
 void DirectX12Application::OnDestroy()
 {
+	// Ensure that the GPU is no longer referencing resources that are about to be
+	// cleaned up by the destructor.
+	WaitForPreviousFrame();
+
+	CloseHandle(m_fenceEvent);
 }
 
 _Use_decl_annotations_
@@ -225,6 +241,7 @@ void DirectX12Application::LoadAssets()
 		UINT compileFlags = 0;
 #endif
 
+		auto p = GetAssetFullPath(L"shaders.hlsl");
 		ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
 		ThrowIfFailed(D3DCompileFromFile(GetAssetFullPath(L"shaders.hlsl").c_str(), nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
 
